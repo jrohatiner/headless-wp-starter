@@ -95,4 +95,7 @@
 
   <!-- Normalize all require/require_onces to use statement, not function, syntax. -->
   <rule ref="PEAR.Files.IncludingFile.BracketsNotRequired" />
+
+  <!-- Require short array syntax -->
+  <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 </ruleset>
