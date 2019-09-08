@@ -47,7 +47,7 @@ class Header extends Component {
   };
 
   render() {
-    const authToken = localStorage.getItem(AUTH_TOKEN);
+    const authToken = typeof localStorage !== 'undefined' ? localStorage.getItem(AUTH_TOKEN) : '';
     const { menus } = this.state;
     const { history } = this.props;
     return (

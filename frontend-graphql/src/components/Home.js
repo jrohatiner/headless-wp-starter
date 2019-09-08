@@ -62,168 +62,168 @@ const PROTECTED_QUERY = gql`
 `;
 
 class Home extends Component {
-  state = {
-    userId: null,
-    page: {
-      title: '',
-      content: '',
-    },
-    pages: [],
-    posts: [],
-  };
+    state = {
+        userId: null,
+        page: {
+            title: '',
+            content: '',
+        },
+        pages: [],
+        posts: [],
+    };
 
-  // used as a authenticated GraphQL client
-  authClient = null;
+    // used as a authenticated GraphQL client
+    authClient = null;
 
-  componentDidMount() {
-    this.executePageQuery();
-    this.executePagesAndCategoriesQuery();
+    componentDidMount() {
+        this.executePageQuery();
+        this.executePagesAndCategoriesQuery();
 
-    // if localstorage contains a JWT token
-    // initiate a authenticated client and execute a protected query
-    const authToken = localStorage.getItem(AUTH_TOKEN);
-    if (authToken) {
-      this.authClient = new ApolloClient({
-        link: createHttpLink({
-          uri: Config.gqlUrl,
-          headers: {
-            Authorization: authToken ? `Bearer ${authToken}` : null,
-          },
-        }),
-        cache: new InMemoryCache(),
-      });
-      this.executeProtectedQuery();
+        // if localstorage contains a JWT token
+        // initiate a authenticated client and execute a protected query
+        const authToken = typeof localStorage !== 'undefined' ? localStorage.getItem(AUTH_TOKEN) : '';
+        if (authToken) {
+            this.authClient = new ApolloClient({
+                link: createHttpLink({
+                    uri: Config.gqlUrl,
+                    headers: {
+                        Authorization: authToken ? `Bearer ${authToken}` : null,
+                    },
+                }),
+                cache: new InMemoryCache(),
+            });
+            this.executeProtectedQuery();
+        }
     }
-  }
 
-  /**
-   * Execute the protected query and update state
-   */
-  executeProtectedQuery = async () => {
-    let error = null;
-    const result = await this.authClient
-      .query({
-        query: PROTECTED_QUERY,
-      })
-      .catch(err => {
-        error = err;
-      });
-    if (!error) {
-      const { userId } = result.data.viewer;
-      this.setState({ userId });
-    } else {
-      const { history } = this.props;
-      localStorage.removeItem(AUTH_TOKEN);
-      history.push(`/login`);
-    }
-  };
+    /**
+     * Execute the protected query and update state
+     */
+    executeProtectedQuery = async () => {
+        let error = null;
+        const result = await this.authClient
+          .query({
+              query: PROTECTED_QUERY,
+          })
+          .catch(err => {
+              error = err;
+          });
+        if (!error) {
+            const { userId } = result.data.viewer;
+            this.setState({ userId });
+        } else {
+            const { history } = this.props;
+            if (typeof localStorage !== 'undefined') localStorage.removeItem(AUTH_TOKEN);
+            history.push(`/login`);
+        }
+    };
 
-  /**
-   * Execute the page query using uri and set the state
-   */
-  executePageQuery = async () => {
-    const { match, client } = this.props;
-    let uri = match.params.slug;
-    if (!uri) {
-      uri = 'welcome';
-    }
-    const result = await client.query({
-      query: PAGE_QUERY,
-      variables: { uri },
-    });
-    const page = result.data.pageBy;
-    this.setState({ page });
-  };
+    /**
+     * Execute the page query using uri and set the state
+     */
+    executePageQuery = async () => {
+        const { match, client } = this.props;
+        let uri = match.params.slug;
+        if (!uri) {
+            uri = 'welcome';
+        }
+        const result = await client.query({
+            query: PAGE_QUERY,
+            variables: { uri },
+        });
+        const page = result.data.pageBy;
+        this.setState({ page });
+    };
 
-  /**
-   * Execute the pages and categories query and set the state
-   */
-  executePagesAndCategoriesQuery = async () => {
-    const { client } = this.props;
-    const result = await client.query({
-      query: PAGES_AND_CATEGORIES_QUERY,
-    });
-    let posts = result.data.posts.edges;
-    posts = posts.map(post => {
-      const finalLink = `/post/${post.node.slug}`;
-      const modifiedPost = { ...post };
-      modifiedPost.node.link = finalLink;
-      return modifiedPost;
-    });
-    let pages = result.data.pages.edges;
-    pages = pages.map(page => {
-      const finalLink = `/page/${page.node.slug}`;
-      const modifiedPage = { ...page };
-      modifiedPage.node.link = finalLink;
-      return modifiedPage;
-    });
+    /**
+     * Execute the pages and categories query and set the state
+     */
+    executePagesAndCategoriesQuery = async () => {
+        const { client } = this.props;
+        const result = await client.query({
+            query: PAGES_AND_CATEGORIES_QUERY,
+        });
+        let posts = result.data.posts.edges;
+        posts = posts.map(post => {
+            const finalLink = `/post/${post.node.slug}`;
+            const modifiedPost = { ...post };
+            modifiedPost.node.link = finalLink;
+            return modifiedPost;
+        });
+        let pages = result.data.pages.edges;
+        pages = pages.map(page => {
+            const finalLink = `/page/${page.node.slug}`;
+            const modifiedPage = { ...page };
+            modifiedPage.node.link = finalLink;
+            return modifiedPage;
+        });
 
-    this.setState({ posts, pages });
-  };
+        this.setState({ posts, pages });
+    };
 
-  render() {
-    const { page, posts, pages } = this.state;
-    return (
-      <div>
-        <div className="graphql intro bg-black white ph3 pv4 ph5-m pv5-l flex flex-column flex-row-l">
-          <div className="color-logo w-50-l mr3-l">
-            <Logo width={440} height={280} />
-          </div>
-          <div className="subhed pr6-l">
-            <h1>{page.title}</h1>
-            <div className="dek">
-              You are now running a WordPress backend with a React frontend.
-            </div>
-            <div className="api-info b mt4">
-              Starter Kit supports both REST API and GraphQL
-              <div className="api-toggle">
-                <a className="rest" href="http://localhost:3000">REST API</a>
-                <a className="graphql" href="http://localhost:3001">GraphQL</a>
+    render() {
+        const { page, posts, pages } = this.state;
+        return (
+          <div>
+              <div className="graphql intro bg-black white ph3 pv4 ph5-m pv5-l flex flex-column flex-row-l">
+                  <div className="color-logo w-50-l mr3-l">
+                      <Logo width={440} height={280} />
+                  </div>
+                  <div className="subhed pr6-l">
+                      <h1>{page.title}</h1>
+                      <div className="dek">
+                          You are now running a WordPress backend with a React frontend.
+                      </div>
+                      <div className="api-info b mt4">
+                          Starter Kit supports both REST API and GraphQL
+                          <div className="api-toggle">
+                              <a className="rest" href="http://localhost:3000">REST API</a>
+                              <a className="graphql" href="http://localhost:3001">GraphQL</a>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
+              <div className="recent flex mh4 mt4 w-two-thirds-l center-l">
+                  <div className="w-50 pr3">
+                      <h2>Posts</h2>
+                      <ul>
+                          {posts.map(post => (
+                            <li key={post.node.slug}>
+                                <Link to={post.node.link}>
+                                    {post.node.title}
+                                </Link>
+                            </li>
+                          ))}
+                      </ul>
+                  </div>
+                  <div className="w-50 pl3">
+                      <h2>Pages</h2>
+                      <ul>
+                          {pages.map(post => {
+                              if (post.node.slug !== 'welcome') {
+                                  return (
+                                    <li key={post.node.slug}>
+                                        <Link to={post.node.link}>
+                                            {post.node.title}
+                                        </Link>
+                                    </li>
+                                  )
+                              } else {
+                                  return false;
+                              }
+                          })}
+                      </ul>
+                  </div>
+              </div>
+              <div className="content mh4 mv4 w-two-thirds-l center-l home"
+                // eslint-disable-next-line react/no-danger
+                   dangerouslySetInnerHTML={{
+                       __html: page.content,
+                   }}
+              />
           </div>
-        </div>
-        <div className="recent flex mh4 mt4 w-two-thirds-l center-l">
-          <div className="w-50 pr3">
-            <h2>Posts</h2>
-            <ul>
-              {posts.map(post => (
-                <li key={post.node.slug}>
-                  <Link to={post.node.link}>
-                    {post.node.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="w-50 pl3">
-            <h2>Pages</h2>
-            <ul>
-              {pages.map(post => {
-                if (post.node.slug !== 'welcome') {
-                  return (
-                    <li key={post.node.slug}>
-                      <Link to={post.node.link}>
-                        {post.node.title}
-                      </Link>
-                    </li>
-                  )
-                } else {
-                  return false;
-                }
-              })}
-            </ul>
-          </div>
-        </div>
-        <div className="content mh4 mv4 w-two-thirds-l center-l home"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: page.content,
-          }}
-        />
-      </div>
-    );
-  }
+        );
+    }
 }
 
 export default withApollo(Home);

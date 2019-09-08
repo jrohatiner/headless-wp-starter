@@ -45,9 +45,11 @@ wp theme delete twentysixteen twentyseventeen twentynineteen twentytwenty
 
 wp plugin delete akismet hello
 wp plugin install --activate --force \
+    coblocks \
+    kenzap-team-members-gutenberg-blocks \
+    rest-gutenberg \
     acf-to-wp-api \
     advanced-custom-fields \
-    custom-post-type-ui \
     wordpress-importer \
     wp-rest-api-v2-menus \
     jwt-authentication-for-wp-rest-api \
