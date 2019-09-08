@@ -96,27 +96,27 @@ class Home extends Component {
         }
     }
 
-    /**
-     * Execute the protected query and update state
-     */
-    executeProtectedQuery = async () => {
-        let error = null;
-        const result = await this.authClient
-          .query({
-              query: PROTECTED_QUERY,
-          })
-          .catch(err => {
-              error = err;
-          });
-        if (!error) {
-            const { userId } = result.data.viewer;
-            this.setState({ userId });
-        } else {
-            const { history } = this.props;
-            if (typeof localStorage !== 'undefined') localStorage.removeItem(AUTH_TOKEN);
-            history.push(`/login`);
-        }
-    };
+  /**
+   * Execute the protected query and update state
+   */
+  executeProtectedQuery = async () => {
+    let error = null;
+    const result = await this.authClient
+      .query({
+        query: PROTECTED_QUERY,
+      })
+      .catch(err => {
+        error = err;
+      });
+    if (!error) {
+      const { userId } = result.data.viewer;
+      this.setState({ userId });
+    } else {
+      const { history } = this.props;
+      if (typeof localStorage !== 'undefined') localStorage.removeItem(AUTH_TOKEN);
+      history.push(`/login`);
+    }
+  };
 
     /**
      * Execute the page query using uri and set the state
@@ -162,65 +162,64 @@ class Home extends Component {
     };
 
     render() {
-        const { page, posts, pages } = this.state;
+      const { page, posts, pages } = this.state;
         return (
           <div>
-              <div className="graphql intro bg-black white ph3 pv4 ph5-m pv5-l flex flex-column flex-row-l">
-                  <div className="color-logo w-50-l mr3-l">
-                      <Logo width={440} height={280} />
-                  </div>
-                  <div className="subhed pr6-l">
-                      <h1>{page.title}</h1>
-                      <div className="dek">
-                          You are now running a WordPress backend with a React frontend.
-                      </div>
-                      <div className="api-info b mt4">
-                          Starter Kit supports both REST API and GraphQL
-                          <div className="api-toggle">
-                              <a className="rest" href="http://localhost:3000">REST API</a>
-                              <a className="graphql" href="http://localhost:3001">GraphQL</a>
-                          </div>
-                      </div>
-                  </div>
+            <div className="graphql intro bg-black white ph3 pv4 ph5-m pv5-l flex flex-column flex-row-l">
+              <div className="color-logo w-50-l mr3-l">
+                <Logo width={440} height={280} />
               </div>
-              <div className="recent flex mh4 mt4 w-two-thirds-l center-l">
-                  <div className="w-50 pr3">
-                      <h2>Posts</h2>
-                      <ul>
-                          {posts.map(post => (
-                            <li key={post.node.slug}>
-                                <Link to={post.node.link}>
-                                    {post.node.title}
-                                </Link>
-                            </li>
-                          ))}
-                      </ul>
+              <div className="subhed pr6-l">
+                <h1>{page.title}</h1>
+                <div className="dek">
+                  You are now running a WordPress backend with a React frontend.
+                </div>
+                <div className="api-info b mt4">
+                  Starter Kit supports both REST API and GraphQL
+                  <div className="api-toggle">
+                    <a className="rest" href="http://localhost:3000">REST API</a>
+                    <a className="graphql" href="http://localhost:3001">GraphQL</a>
                   </div>
-                  <div className="w-50 pl3">
-                      <h2>Pages</h2>
-                      <ul>
-                          {pages.map(post => {
-                              if (post.node.slug !== 'welcome') {
-                                  return (
-                                    <li key={post.node.slug}>
-                                        <Link to={post.node.link}>
-                                            {post.node.title}
-                                        </Link>
-                                    </li>
-                                  )
-                              } else {
-                                  return false;
-                              }
-                          })}
-                      </ul>
-                  </div>
+                </div>
               </div>
-              <div className="content mh4 mv4 w-two-thirds-l center-l home"
-                // eslint-disable-next-line react/no-danger
-                   dangerouslySetInnerHTML={{
-                       __html: page.content,
-                   }}
-              />
+            </div>
+            <div className="recent flex mh4 mt4 w-two-thirds-l center-l">
+              <div className="w-50 pr3">
+                <h2>Posts</h2>
+                <ul>
+                  {posts.map(post => (
+                    <li key={post.node.slug}>
+                      <Link to={post.node.link}>
+                        {post.node.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="w-50 pl3">
+                <h2>Pages</h2>
+                <ul>
+                  {pages.map(post => {
+                    if (post.node.slug !== 'welcome') {
+                      return (
+                        <li key={post.node.slug}>
+                          <Link to={post.node.link}>
+                            {post.node.title}
+                          </Link>
+                        </li>
+                      )
+                    }
+                    return null;
+                  })}
+                </ul>
+              </div>
+            </div>
+            <div className="content mh4 mv4 w-two-thirds-l center-l home"
+              // eslint-disable-next-line react/no-danger
+                 dangerouslySetInnerHTML={{
+                   __html: page.content,
+                 }}
+            />
           </div>
         );
     }

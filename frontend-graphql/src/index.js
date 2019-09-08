@@ -13,25 +13,26 @@ import App from './components/App';
 import 'tachyons/css/tachyons.min.css';
 import './styles/index.css';
 import './styles/style.scss';
+import './styles/index.css';
 
 // Apollo GraphQL client
 const client = new ApolloClient({
-    link: createHttpLink({
-        uri: Config.gqlUrl,
-    }),
-    // eslint-disable-next-line no-underscore-dangle
-    cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
+  link: createHttpLink({
+    uri: Config.gqlUrl,
+  }),
+  // eslint-disable-next-line no-underscore-dangle
+  cache: new InMemoryCache().restore(window.__APOLLO_STATE__),
 });
 
 hydrate(
   <HelmetProvider>
-      <ApolloProvider client={client}>
-          <BrowserRouter>
-              <App>
-                  <Helmet />
-              </App>
-          </BrowserRouter>
-      </ApolloProvider>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App>
+          <Helmet />
+        </App>
+      </BrowserRouter>
+    </ApolloProvider>
   </HelmetProvider>,
   document.getElementById('root'),
 );
