@@ -11,7 +11,7 @@
  */
 add_action(
     'rest_api_init',
-    function () {
+    function () : void {
         remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
 
         add_filter(

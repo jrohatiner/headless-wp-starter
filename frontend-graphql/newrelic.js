@@ -1,7 +1,7 @@
 'use strict';
 
 const appname = process.env.NEWRELIC_APPNAME || 'merdian-dev';
-const license = process.env.NEW_RELIC_LICENSE_KEY || 'DEV';
+const license = process.env.NEW_RELIC_LICENSE_KEY || '1fd0d5b635f80137f6d990498d7389bfc69f5cf0';
 const enabled = process.env.APP_SERVICE_HOST !== 'merdian-dev';
 
 /**

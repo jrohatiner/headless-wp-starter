@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import Home from './Home';
-import Page from './Page';
+import Page from './Page'
 import Post from './Post';
 import Category from './Category';
 

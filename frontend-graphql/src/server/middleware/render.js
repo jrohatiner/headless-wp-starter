@@ -35,7 +35,7 @@ export default (req, res, next) => {
     const helmetContext = {};
     const routerContext = {};
     // render the app as a string
-    const html = (
+    const html = renderToString(
       <HelmetProvider context={helmetContext}>
         <ApolloProvider client={client}>
           <StaticRouter location={req.originalUrl} context={routerContext}>
@@ -46,13 +46,12 @@ export default (req, res, next) => {
     );
 
     getDataFromTree(html).then(() => {
-      const content = renderToString(html);
       const initialState = client.extract();
       // inject the rendered app into our html and send it
       res
         .status(200)
         .send(view({
-          html: content,
+          html,
           state: initialState,
           helmet: helmetContext
         }))

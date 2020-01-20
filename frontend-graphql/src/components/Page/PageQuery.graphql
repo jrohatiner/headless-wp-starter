@@ -1,0 +1,6 @@
+query PageQuery($uri: String!) {
+    pageBy(uri: $uri) {
+        title
+        content
+    }
+}

@@ -14,7 +14,7 @@
  * @param arr $args Array of arguments.
  * @return arr
  */
-function taxonomy_checklist_checked_ontop_filter( $args ) {
+function taxonomy_checklist_checked_ontop_filter( $args ) : array {
     $args['checked_ontop'] = false;
     return $args;
 }

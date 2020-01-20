@@ -11,16 +11,20 @@ import route from './routes/index';
 
 // initialize the application and create the routes
 const app = express();
-app.use('/', route);
+
 // other static resources should just be served as they are
 app.use(express.static(
-  path.resolve(__dirname, '..', '..', '..', 'build'),
-  { maxAge: '30d' },
+  path.resolve(`${__dirname}/../../build/static`),
 ));
 
-app.use('images', express.static(
-  path.resolve(`${__dirname}/web/images`)
+app.use('/static/media', express.static(
+  path.resolve(`${__dirname}/../../build/static/media`)
 ));
+
+app.use('/', route);
+app.use('*', (req, res) => {
+  res.status(404).send('404');
+});
 
 app.use(cookieParser());
 app.use(bodyParser.json());

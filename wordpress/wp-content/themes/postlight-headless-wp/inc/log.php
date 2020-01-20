@@ -12,14 +12,13 @@
  * To use this, in your PHP template inside PHP tags, add a line like this:
  *  log_console('$mobile_image_size_inline_style var', $mobile_image_size_inline_style, true);
  *
- * @param str  $name message to be shown for optional data/vars.
- * @param str  $data variable (scalar/mixed) arrays/objects, etc to be logged.
+ * @param string  $name message to be shown for optional data/vars.
+ * @param string  $data variable (scalar/mixed) arrays/objects, etc to be logged.
  * @param bool $js_eval whether to apply JS eval() to arrays/objects.
  *
- * @return none
- * @author Sarfraz
+ * @return bool
  */
-function log_console( $name, $data = null, $js_eval = false ) {
+function log_console( $name, $data = null, $js_eval = false ) : bool {
     if ( ! $name ) {
         return false;
     }
@@ -73,12 +72,12 @@ JSCODE;
  *
  * NOT INTENDED FOR PRODUCTION USE.
  *
- * @param str $message Message.
- * @param str $file Filename, defaults to __FILE__.
- * @param str $line Line number, defaults to __LINE__.
+ * @param string $message Message.
+ * @param string $file Filename, defaults to __FILE__.
+ * @param string $line Line number, defaults to __LINE__.
  * @return void
  */
-function log_it( $message, $file = __FILE__, $line = __LINE__ ) {
+function log_it( $message, $file = __FILE__, $line = __LINE__ ) : void {
     // phpcs:disable WordPress
     if ( WP_DEBUG === true ) {
         if ( is_array( $message ) || is_object( $message ) ) {

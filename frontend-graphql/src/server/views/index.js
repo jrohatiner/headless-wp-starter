@@ -1,4 +1,7 @@
 import newrelic from 'newrelic';
+import manifest from '../../../build/asset-manifest';
+
+const mainJs = manifest['main.js'].replace(/\/static/, '');
 
 /**
  * @param html
@@ -6,8 +9,8 @@ import newrelic from 'newrelic';
  * @param helmet
  */
 // eslint-disable-next-line
-const view = ({ html, state, helmet }) => (
-  `
+const view = ({ html, state, helmet }) => {
+  return (`
     <!DOCTYPE html>
     <html>
         <head>
@@ -16,18 +19,19 @@ const view = ({ html, state, helmet }) => (
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <meta name="theme-color" content="#7292BC"> 
             <!-- Latest compiled and minified CSS -->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-            <link type="text/css" rel="stylesheet" href="/web/css/bundle.css" />
+            <link type="text/css" rel="stylesheet" href="/css/main.ffd507db.chunk.css" />
             <script>
-                window.__APP_WEB_HOST__ = ${JSON.stringify(process.env.APP_WEB_HOST)};
                 window.__NODE_ENV__ = ${JSON.stringify(process.env.NODE_ENV)};
+            </script>
+            <script>
+                window.__STATE__ = ${JSON.stringify(state)}
             </script>
         </head>
         <body>
             <div id="root">${html}</div>
-            <script>window.__STATE__ = ${JSON.stringify(state)}</script>
-            <script> window.__APOLLO_STATE__ = JSON.stringify(client.extract());</script>
-            <script type="text/javascript" src="/web/main.bundle.js"></script>
+            <script type="text/javascript" src="/js/2.c8ee481d.chunk.js"></script>
+            <script type="text/javascript" src="/js/runtime~main.42ac5946.js"></script>
+            <script type="text/javascript" src="${mainJs}"></script>
             <script>
                 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -39,8 +43,8 @@ const view = ({ html, state, helmet }) => (
             <script async src="https://www.google-analytics.com/analytics.js"></script>
         </body>
     </html>
-  `
-);
+  `)
+};
 
 export default view;
 

@@ -19,7 +19,7 @@ const PAGE_QUERY = gql`
 /**
  * Fetch and display a Page
  */
-class Page extends Component {
+class OldPage extends Component {
   state = {
     page: {
       title: '',
@@ -45,6 +45,7 @@ class Page extends Component {
       variables: { uri },
     });
     const page = result.data.pageBy;
+    console.log('result', result);
     this.setState({ page });
   };
 
@@ -63,4 +64,4 @@ class Page extends Component {
   }
 }
 
-export default withApollo(Page);
+export default withApollo(OldPage);

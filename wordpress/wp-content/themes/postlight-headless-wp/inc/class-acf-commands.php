@@ -27,7 +27,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI && ! class_exists( 'ACF_Commands' ) ) {
 		 * @param arr $assoc_args Associated arguments
 		 * @return void
 		 */
-		public function sync( $args, $assoc_args ) {
+		public function sync( $args, $assoc_args ) : void {
 
 			// vars
 			$groups = acf_get_field_groups();

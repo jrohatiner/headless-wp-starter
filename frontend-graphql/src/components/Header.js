@@ -4,9 +4,6 @@ import { withRouter } from 'react-router';
 import { withApollo } from 'react-apollo';
 import { compose } from 'recompose';
 import gql from 'graphql-tag';
-import { AUTH_TOKEN, USERNAME } from '../constants';
-import { ReactComponent as Logo } from '../static/images/starter-kit-logo.svg';
-import { ReactComponent as SearchIcon } from '../static/images/search.svg';
 
 /**
  * GraphQL menu query
@@ -47,9 +44,7 @@ class Header extends Component {
   };
 
   render() {
-    const authToken = typeof localStorage !== 'undefined' ? localStorage.getItem(AUTH_TOKEN) : '';
     const { menus } = this.state;
-    const { history } = this.props;
     return (
       <div className="menu bb">
         <div className="flex justify-between w-90-l center-l">
