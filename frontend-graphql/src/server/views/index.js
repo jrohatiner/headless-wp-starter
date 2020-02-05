@@ -1,5 +1,5 @@
 import newrelic from 'newrelic';
-import manifest from '../../../build/asset-manifest';
+import manifest from '../../../build/asset-manifest.json';
 
 const mainJs = manifest['main.js'].replace(/\/static/, '');
 

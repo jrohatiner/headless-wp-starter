@@ -1,6 +1,6 @@
 {
-    "short_name": "React App",
-    "name": "WordPress + React Starter Kit Frontend by Postlight",
+    "short_name": "Meridian Docs",
+    "name": "Meridian Health Center",
     "icons": [
         {
             "src": "favicon.ico",
@@ -10,6 +10,6 @@
     ],
     "start_url": "./index.html",
     "display": "standalone",
-    "theme_color": "#000000",
+    "theme_color": "#7292BC",
     "background_color": "#ffffff"
 }

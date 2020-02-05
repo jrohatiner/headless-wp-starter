@@ -1,21 +1,22 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Header from './Header';
+import Header from './Header/index';
 import Footer from './Footer';
-import Home from './Home';
+// import Home from './Home/index';
 import Page from './Page'
 import Post from './Post';
-import Category from './Category';
+// import Blog from './Blog';
 
 export default () => (
   <div className="center">
     <Header />
     <div className="">
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/page/:slug" component={Page} />
-        <Route exact path="/post/:slug" component={Post} />
-        <Route exact path="/category/:slug" component={Category} />
+        <Route exact path="/" component={Page} />
+        <Route exact path="/:slug" component={Page} />
+        {/* @todo: Not ready yet */}
+        {/* <Route exact path="/blog/" component={Blog} /> */}
+        <Route exact path="/blog/:slug" component={Post} />
       </Switch>
     </div>
     <Footer />

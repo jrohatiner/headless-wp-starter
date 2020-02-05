@@ -10,10 +10,9 @@ import { createHttpLink } from 'apollo-link-http';
 import Config from './config';
 import App from './components/App';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import 'tachyons/css/tachyons.min.css';
-import './styles/index.css';
 import './styles/style.scss';
-import './styles/index.css';
 
 // Apollo GraphQL client
 const client = new ApolloClient({
